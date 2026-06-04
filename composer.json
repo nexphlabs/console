@@ -1,0 +1,17 @@
+{
+    "name": "nexph/console",
+    "description": "Nexph Console - CLI subsystem",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Nexph\\Console\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "nexph/runtime": "^0.1"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
