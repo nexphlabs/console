@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Nexph\Cli;
+namespace Nexph\Console;
 
 use Nexph\Runtime\Observability\HealthMonitor;
 use Nexph\Runtime\Observability\RuntimeState;
