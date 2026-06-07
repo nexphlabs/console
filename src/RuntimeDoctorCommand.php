@@ -57,8 +57,40 @@ class RuntimeDoctorCommand extends Command
             echo "  [$status] $name\n";
         }
 
+        echo "\nRecommendations:\n";
+        $this->showRecommendations();
+
         echo "\n";
         return 0;
+    }
+
+    private function showRecommendations(): void
+    {
+        $missing = [];
+        
+        if (!ExtensionDetector::has('event')) {
+            $missing[] = 'ext-event - Better event loop performance';
+        }
+        
+        if (!ExtensionDetector::has('sockets')) {
+            $missing[] = 'ext-sockets - Native socket options and UDP support';
+        }
+        
+        if (!ExtensionDetector::has('apcu')) {
+            $missing[] = 'ext-apcu - Fast local cache';
+        }
+        
+        if (!ExtensionDetector::has('sysvsem')) {
+            $missing[] = 'ext-sysvsem - IPC semaphores';
+        }
+        
+        if (empty($missing)) {
+            echo "  All recommended extensions installed\n";
+        } else {
+            foreach ($missing as $item) {
+                echo "  - $item\n";
+            }
+        }
     }
 
     private function checkExtension(string $name): void
