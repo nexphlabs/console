@@ -7,21 +7,28 @@ class OptimizeCommand extends Command
     protected string $name = 'optimize';
     protected string $description = 'Optimize Nexph runtime';
 
-    public function handle(): int
+    public function execute(array $args = []): int
     {
-        $this->info('Compiling routes...');
+        $this->parseArgs($args);
+        $this->output('Compiling routes...');
         $this->compileRoutes();
 
-        $this->info('Compiling container...');
+        $this->output('Compiling container...');
         $this->compileContainer();
 
-        $this->info('Compiling config...');
+        $this->output('Compiling config...');
         $this->compileConfig();
 
-        $this->info('Generating preload...');
+        $this->output('Compiling middleware...');
+        $this->compileMiddleware();
+
+        $this->output('Compiling schedule...');
+        $this->compileSchedule();
+
+        $this->output('Generating preload...');
         $this->generatePreload();
 
-        $this->success('Optimization complete!');
+        $this->output('Optimization complete');
         return 0;
     }
 
@@ -44,8 +51,28 @@ class OptimizeCommand extends Command
         file_put_contents('storage/nexph/compiled/config.php', "<?php\nreturn [];\n");
     }
 
+    private function compileMiddleware(): void
+    {
+        file_put_contents('storage/nexph/compiled/middleware.php', "<?php\nreturn [];\n");
+    }
+
+    private function compileSchedule(): void
+    {
+        file_put_contents('storage/nexph/compiled/schedule.php', "<?php\nreturn [];\n");
+    }
+
     private function generatePreload(): void
     {
-        file_put_contents('storage/nexph/compiled/preload.php', "<?php\n");
+        $classes = [
+            \Nexph\Server\HttpServer::class,
+            \Nexph\Server\Router::class,
+            \Nexph\Runtime\Runtime::class,
+            \Nexph\Lifecycle\Lifecycle::class,
+        ];
+        $body = "<?php\n";
+        foreach ($classes as $class) {
+            $body .= "class_exists(" . var_export($class, true) . ");\n";
+        }
+        file_put_contents('storage/nexph/compiled/preload.php', $body);
     }
 }
