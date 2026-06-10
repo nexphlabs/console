@@ -14,24 +14,13 @@ class OptimizeCommand extends Command
     {
         $parsed = $this->parseArgs($args);
         $storagePath = (string) ($parsed['options']['storage'] ?? (getcwd() . '/storage'));
-        $files = $this->getSourceFiles(getcwd());
+        $compiler = new OptimizeCompiler($storagePath, getcwd());
+        $files = $compiler->sourceFiles();
 
-        (new OptimizeCompiler($storagePath))->compile($files);
+        $compiler->compile($files);
         (new OptimizeManifest($storagePath))->save($files);
         $this->output('Optimized.');
 
         return 0;
-    }
-
-    private function getSourceFiles(string $root): array
-    {
-        $files = [];
-        foreach (['app.php', 'test.php', 'config/app.php', 'routes/web.php', 'routes/api.php'] as $file) {
-            $path = $root . '/' . $file;
-            if (is_file($path)) {
-                $files[] = $path;
-            }
-        }
-        return $files;
     }
 }
