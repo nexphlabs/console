@@ -68,6 +68,8 @@ class CommandRegistry {
     private function registerDefaultCommands(): void {
         $this->register('help', new HelpCommand($this));
         $this->register('optimize', new OptimizeCommand());
+        $this->register('optimize:clear', new OptimizeClearCommand());
+        $this->register('preload', new PreloadCommand());
         $this->register('queue:work', new QueueWorkCommand());
         $this->register('queue:stats', new QueueStatsCommand());
         $this->register('queue:clear', new QueueClearCommand());
