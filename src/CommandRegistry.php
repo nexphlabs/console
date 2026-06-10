@@ -80,7 +80,5 @@ class CommandRegistry {
         $this->register('runtime:health', new RuntimeHealthCommand());
         $this->register('runtime:reload', new RuntimeReloadCommand());
         $this->register('runtime:stop', new RuntimeStopCommand());
-        $this->register('schedule:run', new ScheduleRunCommand());
-        $this->register('schedule:list', new ScheduleListCommand());
     }
 }
